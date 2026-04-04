@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Luminote" />
+  <title>Luminote</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ─── SCREENS ─────────────────────────────────────────── -->
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <header class="home-header">
+      <div class="home-header-inner">
+        <h1 class="app-logo">Luminote</h1>
+        <button class="icon-btn" id="btn-upload-home" title="Add book">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+      <p class="home-subtitle">Your reading, distilled.</p>
+    </header>
+
+    <div class="home-stats" id="home-stats" style="display:none">
+      <div class="stat-pill"><span id="stat-books">0</span> books</div>
+      <div class="stat-pill"><span id="stat-highlights">0</span> highlights</div>
+      <div class="stat-pill"><span id="stat-bulbs">0</span> bulbed</div>
+    </div>
+
+    <div class="books-grid" id="books-grid">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="10" width="38" height="48" rx="4" stroke="#d0d0d0" stroke-width="2"/><rect x="16" y="6" width="38" height="48" rx="4" fill="white" stroke="#e0e0e0" stroke-width="2"/><line x1="26" y1="20" x2="44" y2="20" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="27" x2="44" y2="27" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="34" x2="38" y2="34" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <p class="empty-title">No books yet</p>
+        <p class="empty-sub">Upload a Play Books PDF to get started</p>
+        <button class="btn-primary" id="btn-upload-empty">Upload PDF</button>
+      </div>
+    </div>
+
+    <input type="file" id="file-input" accept="application/pdf" style="display:none" multiple />
+  </div>
+
+  <!-- DEEP DIVE -->
+  <div id="screen-deepdive" class="screen">
+    <header class="dive-header">
+      <button class="back-btn" id="btn-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="dive-title-wrap">
+        <h2 class="dive-book-title" id="dive-book-title">Book Title</h2>
+        <span class="dive-author" id="dive-author">Author</span>
+      </div>
+      <button class="icon-btn" id="btn-filter-toggle" title="Filter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      </button>
+    </header>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="filter-bar" style="display:none">
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="bulbed">⚡ Bulbed</button>
+        <button class="chip" data-filter="recent">Recent</button>
+      </div>
+      <div class="filter-row">
+        <label class="filter-label">Chapter</label>
+        <select id="chapter-filter" class="filter-select">
+          <option value="all">All chapters</option>
+        </select>
+      </div>
+      <div class="filter-row">
+        <label class="filter-label">Sort by</label>
+        <select id="sort-filter" class="filter-select">
+          <option value="order">Book order</option>
+          <option value="date-new">Newest highlighted</option>
+          <option value="date-old">Oldest highlighted</option>
+          <option value="length-long">Longest first</option>
+          <option value="length-short">Shortest first</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Chapter Jump -->
+    <div class="chapter-nav" id="chapter-nav"></div>
+
+    <!-- Highlights Feed -->
+    <div class="highlights-feed" id="highlights-feed"></div>
+  </div>
+
+  <!-- STACK -->
+  <div id="screen-stack" class="screen">
+    <header class="sub-header">
+      <h2>Stack</h2>
+      <p class="sub-desc">All your bulbed highlights, across every book.</p>
+    </header>
+    <div class="stack-filters">
+      <div class="filter-chips">
+        <button class="chip active" data-stack-filter="all">All</button>
+        <button class="chip" data-stack-filter="recent">Recent</button>
+      </div>
+      <select id="stack-book-filter" class="filter-select" style="margin:0 16px 12px">
+        <option value="all">All books</option>
+      </select>
+    </div>
+    <div class="highlights-feed" id="stack-feed"></div>
+    <div class="empty-state" id="stack-empty" style="display:none;padding:60px 24px">
+      <p class="empty-title">No bulbs yet</p>
+      <p class="empty-sub">Tap ⚡ on any highlight you love</p>
+    </div>
+  </div>
+
+  <!-- RANDOMIZER -->
+  <div id="screen-randomizer" class="screen">
+    <header class="sub-header">
+      <h2>Randomizer</h2>
+      <p class="sub-desc">A surprise from your reading mind.</p>
+    </header>
+    <div class="random-stage" id="random-stage">
+      <div class="random-card" id="random-card">
+        <p class="random-empty">Tap the button below to pull a highlight</p>
+      </div>
+      <div class="random-actions">
+        <button class="btn-primary" id="btn-randomize">Shuffle ✦</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="screen-settings" class="screen">
+    <header class="sub-header">
+      <h2>Settings</h2>
+    </header>
+    <div class="settings-list">
+      <div class="settings-section">
+        <p class="settings-section-title">Library</p>
+        <button class="settings-row" id="btn-upload-settings">
+          <span>Add a book (PDF)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="settings-row danger" id="btn-clear-all">
+          <span>Clear all data</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="settings-section">
+        <p class="settings-section-title">About</p>
+        <div class="settings-row no-action">
+          <span>Luminote v1.0</span>
+        </div>
+        <div class="settings-row no-action">
+          <span>Data stored locally on device</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BOTTOM NAV ───────────────────────────────────────── -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-item active" data-screen="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>
+      <span>Library</span>
+    </button>
+    <button class="nav-item" data-screen="stack">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 10h16M4 14h10"/><circle cx="17" cy="17" r="3"/><path d="M17 15v2l1 1"/></svg>
+      <span>Stack</span>
+    </button>
+    <button class="nav-item" data-screen="randomizer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 3h3v3M3 21l7.5-7.5M14 10l7-7M3 3l18 18M3 9l6 6M14.5 14.5L21 21h-3"/></svg>
+      <span>Randomizer</span>
+    </button>
+    <button class="nav-item" data-screen="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/pdfparse.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
